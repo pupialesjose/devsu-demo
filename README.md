@@ -87,9 +87,6 @@ kubectl port-forward service/devsu-app-service 8080:80
 
 ### 3. Open http://localhost:8080/api/users with your browser.
 
-```bash
-kubectl port-forward service/devsu-app-service 8080:80
-```
 
 ## CI/CD Pipeline
 A fully automated pipeline is configured via GitHub Actions (.github/workflows/main.yml).
