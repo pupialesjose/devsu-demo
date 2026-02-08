@@ -6,20 +6,22 @@ This is a simple application to be used in the technical test of DevOps.
 
 ### Prerequisites
 
-- Node.js 18.15.0
+- **Node.js:** 18.x (LTS)
+- **Docker:** Desktop (with Kubernetes enabled) or Minikube
+- **kubectl:** v1.25+
 
 ### Installation
 
 Clone this repo.
 
 ```bash
-git clone https://bitbucket.org/devsu/demo-devops-nodejs.git
+git clone https://github.com/pupialesjose/devsu-demo.git
 ```
 
 Install dependencies.
 
 ```bash
-npm i
+npm install
 ```
 
 ### Database
@@ -27,6 +29,33 @@ npm i
 The database is generated as a file in the main path when the project is first run, and its name is `dev.sqlite`.
 
 Consider giving access permissions to the file for proper functioning.
+
+## Dockerization
+
+The application uses a Multi-stage Build to minimize image size and increase security.
+
+- Base Image: node:18-alpine (for a lightweight footprint).
+
+- Build Stage: Runs npm install and prepares the environment.
+
+- Production Stage: Contains only production dependencies and the source code.
+
+## Build and Run locally:
+
+### 1. Build the image:
+
+```bash
+docker build -t devsu-app:latest .
+```
+
+## Build and Run locally:
+
+### 2. Run the container:
+
+```bash
+docker run -d -p 8000:8000 --name devsu-container devsu-app:latest
+```
+
 
 ## Usage
 
