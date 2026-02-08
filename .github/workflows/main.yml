@@ -1,0 +1,52 @@
+name: CI/CD Pipeline Devsu
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test_and_build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Descargar el código del repositorio
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Configurar Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    # 3. Instalar dependencias
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Ejecutar Tests Unitarios
+    - name: Run Unit Tests
+      run: npm run test -- --forceExit
+
+    # 5. Analizar Cobertura
+    - name: Check Code Coverage
+      run: npm run test -- --coverage --forceExit
+
+    # 6. Configurar Docker Buildx (Para construcción optimizada)
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # 7. Construir la imagen de Docker
+    # Esto valida que el Dockerfile que hicimos sigue funcionando
+    - name: Build Docker Image
+      run: |
+        docker build -t devsu-app-test:${{ github.sha }} .
+
+    # 8. Escaneo de seguridad
+    - name: Image Scan
+      uses: anchore/scan-action@v3
+      with:
+        image: "devsu-app-test:${{ github.sha }}"
+        fail-build: false
