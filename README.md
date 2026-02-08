@@ -18,12 +18,6 @@ Clone this repo.
 git clone https://github.com/pupialesjose/devsu-demo.git
 ```
 
-Install dependencies.
-
-```bash
-npm install
-```
-
 ### Database
 
 The database is generated as a file in the main path when the project is first run, and its name is `dev.sqlite`.
