@@ -34,11 +34,11 @@ Consider giving access permissions to the file for proper functioning.
 
 The application uses a Multi-stage Build to minimize image size and increase security.
 
-- Base Image: node:18-alpine (for a lightweight footprint).
+- **Base Image:** node:18-alpine (for a lightweight footprint).
 
-- Build Stage: Runs npm install and prepares the environment.
+- **Build Stage:** Runs npm install and prepares the environment.
 
-- Production Stage: Contains only production dependencies and the source code.
+- **Production Stage:** Contains only production dependencies and the source code.
 
 ## Build and Run locally:
 
@@ -56,22 +56,52 @@ docker build -t devsu-app:latest .
 docker run -d -p 8000:8000 --name devsu-container devsu-app:latest
 ```
 
+### 3. Open http://localhost:8000/api/users with your browser.
 
-## Usage
+## Kubernetes Orchestration
+The solution includes production-ready manifests in the k8s/ directory.
 
-To run tests you can use this command.
+Key Features:
+- **Scalability:** Configured with replicas: 2 for high availability.
+
+- **Auto-scaling:** Horizontal Pod Autoscaler (HPA) set to scale from 2 to 5 replicas based on CPU (70% threshold).
+
+- **Security:** Sensitive data like DB_PASSWORD is managed via Kubernetes Secrets.
+
+- **Config Management:** Environment variables (NODE_ENV, PORT) managed via ConfigMaps.
+
+- **Networking:** Service (ClusterIP) and Ingress rules for traffic management.
+
+## Deployment steps:
+### 1. Apply all manifests:
 
 ```bash
-npm run test
+kubectl apply -f k8s/
 ```
 
-To run locally the project you can use this command.
+### 2. Access the app via Kubernetes (Port-forwarding):
 
 ```bash
-npm run start
+kubectl port-forward service/devsu-app-service 8080:80
 ```
 
-Open http://localhost:8000/api/users with your browser to see the result.
+### 3. Open http://localhost:8080/api/users with your browser.
+
+```bash
+kubectl port-forward service/devsu-app-service 8080:80
+```
+
+## CI/CD Pipeline
+A fully automated pipeline is configured via GitHub Actions (.github/workflows/main.yml).
+
+- **Validation:** Runs npm run test -- --forceExit on every push to ensure 100% test compliance.
+
+- **Coverage:** Generates a code coverage report during the test phase.
+
+- **Security:** Includes an Anchore Scan step to audit the Docker image for vulnerabilities before deployment.
+
+- **Build:** Automatically validates the Docker build process on Ubuntu-latest runners.
+
 
 ### Features
 
