@@ -34,7 +34,7 @@ jobs:
     - name: Check Code Coverage
       run: npm run test -- --coverage --forceExit
 
-    # 6. Configurar Docker Buildx (Para construcción optimizada)
+    # 6. Configurar Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -50,3 +50,12 @@ jobs:
       with:
         image: "devsu-app-test:${{ github.sha }}"
         fail-build: false
+
+    # 9. Despliegue a Kubernetes
+    - name: Validate Kubernetes Manifests (Dry Run)
+      run: |
+        kubectl apply --dry-run=client -f k8s/configmap.yaml
+        kubectl apply --dry-run=client -f k8s/secrets.yaml
+        kubectl apply --dry-run=client -f k8s/deployment.yaml
+        kubectl apply --dry-run=client -f k8s/service.yaml
+        kubectl apply --dry-run=client -f k8s/hpa.yaml
