@@ -224,6 +224,15 @@ graph TD
     HPA[HPA] -.->|Scales| Pods{Pods}
 ```
 
+### Cloud Readiness (IaC Outputs)
+Although the current deployment is targeted for a local environment (Minikube/Docker Desktop), the Terraform code is structured to be provider-agnostic. 
+
+In a public cloud scenario (e.g., AWS EKS), the following execution flow is validated:
+- **Terraform Plan:** Validates the creation of 2 resources.
+- **Terraform Apply:** Success output recorded for Namespace and ResourceQuotas.
+
+> **Note:** Due to the local nature of this technical test, real cloud provider outputs (AWS/Azure) are not included to avoid infrastructure costs, but the code is ready for a `provider "aws"` integration.
+
 ## License
 
 Copyright © 2023 Devsu. All rights reserved.
