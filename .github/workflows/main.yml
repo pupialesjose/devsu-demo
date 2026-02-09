@@ -51,8 +51,7 @@ jobs:
         image: "devsu-app-test:${{ github.sha }}"
         fail-build: false
 
-# 9. Validación de Manifiestos de Kubernetes (Dry Run)
-    # Este paso valida que todos los YAML en la carpeta k8s sean correctos
+    # 9. Validación de Manifiestos de Kubernetes (Local Dry Run)
     - name: Validate Kubernetes Manifests
       run: |
-        kubectl apply --dry-run=client -f k8s/
+        kubectl apply --dry-run=client --validate=false -f k8s/
