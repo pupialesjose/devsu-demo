@@ -210,6 +210,19 @@ terraform init
 terraform plan
 terraform apply
 
+
+## Architecture Diagram
+
+```mermaid
+graph TD
+    User((User)) --> Ingress[Ingress Controller]
+    Ingress --> Service[Service: NodePort/ClusterIP]
+    Service --> Pod1[Pod Replica 1]
+    Service --> Pod2[Pod Replica 2]
+    Pod1 --> DB[(SQLite File)]
+    Pod2 --> DB
+    HPA[HPA] -.->|Scales| Pods{Pods}
+
 ## License
 
 Copyright © 2023 Devsu. All rights reserved.
