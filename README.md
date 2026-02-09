@@ -187,6 +187,29 @@ If the response is unsuccessful, we will receive status 400 and the following me
 }
 ```
 
+---
+
+## 3. Infrastructure as Code (Terraform)
+
+This project adopts a **GitOps and IaC approach**. While the Kubernetes manifests (`/k8s`) handle the application lifecycle, Terraform is used as the **Foundation Layer** to prepare the cluster environment.
+
+### Why Terraform?
+In a production scenario, manual creation of Namespaces or Resource Quotas is prone to error. This configuration ensures:
+- **Consistent Environments:** Every time you run this, you get the exact same `devsu-production` namespace.
+- **Guardrails:** The `LimitRange` defined in `main.tf` acts as a safety net, ensuring no container (even those not yet deployed) can exceed the cluster's physical limits.
+- **Modularity:** By using variables, we can easily replicate this infrastructure for `staging` or `development` environments just by changing a single value.
+
+### Operational Workflow:
+1. **Infra Layer:** Run `terraform apply` to create the namespace and set resource boundaries.
+2. **App Layer:** Run `kubectl apply -f k8s/` to deploy the application into the pre-configured namespace.
+
+### Execution:
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply
+
 ## License
 
 Copyright © 2023 Devsu. All rights reserved.
