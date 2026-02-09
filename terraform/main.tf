@@ -1,4 +1,4 @@
-# Configuración del Provider (Usaremos Kubernetes para ser coherentes con el resto del ejercicio)
+# Configuración del Provider 
 terraform {
   required_providers {
     kubernetes = {
@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-# Definición de variables para mayor flexibilidad (Buenas prácticas)
+# Definición de variables para mayor flexibilidad 
 variable "app_name" {
   description = "Name of the application"
   type        = "string"
@@ -32,7 +32,7 @@ resource "kubernetes_namespace" "devsu_ns" {
   }
 }
 
-# Ejemplo de cómo gestionaríamos un recurso (un LimitRange para control de costos/recursos)
+# Ejemplo de cómo gestionaríamos un recurso 
 resource "kubernetes_limit_range" "devsu_limits" {
   metadata {
     name      = "${var.app_name}-limits"

@@ -12,5 +12,4 @@ metadata:
   name: demo-app-secrets
 type: Opaque
 data:
-  # La palabra 'devsu' codificada en base64
   DB_PASSWORD: ZGV2c3U=

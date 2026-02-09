@@ -2,7 +2,7 @@
 FROM node:18.15.0-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-# Instalamos todas las dependencias (incluyendo devDependencies para tests)
+# Instalamos todas las dependencias
 RUN npm install
 COPY . .
 # Ejecutamos tests según el README
