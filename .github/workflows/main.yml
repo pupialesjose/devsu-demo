@@ -51,12 +51,11 @@ jobs:
         image: "devsu-app-test:${{ github.sha }}"
         fail-build: false
 
-    # 9. Validación de Manifiestos de Kubernetes (Kube-lint local)
+    # 9. Validación de Manifiestos de Kubernetes (Multi-document YAML)
     - name: Validate Kubernetes Manifests
       run: |
-        # Verificamos que los archivos sean YAML válidos sin usar el motor de conexión de kubectl
         for file in k8s/*.yaml; do
           echo "Checking $file..."
-          python3 -c "import yaml, sys; yaml.safe_load(open(sys.argv[1]))" "$file"
+          python3 -c "import yaml, sys; list(yaml.safe_load_all(open(sys.argv[1])))" "$file"
         done
-        echo "All manifests have valid YAML syntax."
+        echo "All manifests have valid multi-document YAML syntax."
