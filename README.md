@@ -222,6 +222,7 @@ graph TD
     Pod1 --> DB[(SQLite File)]
     Pod2 --> DB
     HPA[HPA] -.->|Scales| Pods{Pods}
+```
 
 ## License
 
